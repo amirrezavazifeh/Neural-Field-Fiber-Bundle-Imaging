@@ -53,7 +53,7 @@ Both networks are multilayer perceptrons (MLPs). To mitigate spectral bias, we a
 ---
 
 ## Usage
-1. **Prepare your data**: Place burst frames in a folder, named sequentially as `0_000.png`, `1_000.png`, ..., `{N-1}_000.png`, where $N$ is the number of frames.
+1. Place burst frames in a folder, named sequentially as `0_000.png`, `1_000.png`, ..., `{N-1}_000.png`, where $N$ is the number of frames.
 2. Open and run `main.ipynb` in Google Colab or locally (A100 GPU recommended).  
 3. Select:
    - Motion model (`Homography`, `Optical Flow`, `Optical Flow w/o TV loss`, or `None`)
