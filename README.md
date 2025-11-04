@@ -7,9 +7,8 @@
 
 ## Overview
 Fiber-optic imaging systems enable minimally invasive **in-vivo** imaging but suffer from sampling artifacts (e.g., honeycomb patterns) due to discrete and non-uniform fiber layouts.  
-This repository implements an **unsupervised test-time training method** for removing these artifacts from a burst of misaligned frames — without requiring ground truth, calibration, or prior knowledge of fiber geometry.
 
-The key idea is to recover information occluded by the fiber mask in individual frames but revealed across multiple frames.
+This repository implements an **unsupervised test-time training method** for removing these artifacts from a burst of misaligned frames — without requiring ground truth, calibration, or prior knowledge of fiber geometry. The key idea is to recover information occluded by the fiber mask in individual frames but revealed across multiple frames.
 
 Our method jointly optimizes:
 - A **motion network** that models frame-to-frame transformations.  
