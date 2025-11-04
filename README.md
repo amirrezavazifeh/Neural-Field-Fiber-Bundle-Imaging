@@ -19,19 +19,30 @@ Our method jointly optimizes:
 Each input frame is modeled as a warped observation of a canonical scene.  
 For each pixel coordinate $(x, y, t)$:
 
-$$\hat{I}(x, y, t) = f_\theta\bigl(\gamma(T_{g_\phi}(x, y, t))\bigr)$$
+$$
+\hat{I}(x, y, t) = f_\theta\left(\gamma\left(T_{g_\phi}(x, y, t)\right)\right)
+$$
 
 where:
-- $T_{g_\phi}$: motion transformation (e.g., homography or optical flow)  
-- $\gamma(\cdot)$: positional encoding  
-- $f_\theta$: scene representation network  
-- Both networks are trained jointly using an $L_2$ reconstruction loss.
+- $T_{g_\phi}$ : motion transformation (e.g., homography or optical flow)  
+- $\gamma(\cdot)$ : positional encoding  
+- $f_\theta$ : scene representation network  
+- Both networks are trained jointly using an $\ell_2$ reconstruction loss
 
 The optimization minimizes:
 
-$$\mathcal{L} = \sum_{x, y, t} \left\| \hat{I}(x, y, t) - I(x, y, t) \right\|^2$$
+$$
+\mathcal{L} = \sum_{x, y, t} \left\lVert \hat{I}(x, y, t) - I(x, y, t) \right\rVert^2
+$$
 
 Both networks are multilayer perceptrons (MLPs). To mitigate spectral bias, we apply a positional encoding $\gamma(\cdot)$ to spatial coordinates before mapping to RGB values.
+
+---
+
+## Reconstruction Examples
+<p align="center">
+  <img src="Reconstruction Examples.png" width="1000">
+</p>
 
 ---
 
@@ -50,12 +61,6 @@ Both networks are multilayer perceptrons (MLPs). To mitigate spectral bias, we a
    - Key hyperparameters (e.g., encoding scale $\sigma$)
 
 Ablation scripts for motion, encoding, and hyperparameter studies are also provided.
-
----
-
-## Citation
-If you use this work, please cite:
-> Vazifeh, A.R. *et al.*, "Unsupervised Fiber Bundle Artifact Removal Using Neural Fields," 2025.
 
 ---
 
