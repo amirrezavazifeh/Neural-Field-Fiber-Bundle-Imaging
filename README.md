@@ -17,17 +17,19 @@ Our method jointly optimizes:
 ---
 
 ## Method Summary
-Each input frame is modeled as a warped observation of a canonical scene. For each pixel coordinate $(x, y, t)$, the reconstructed RGB values are:
+
+Each input frame is modeled as a warped observation of a canonical scene.  
+For each pixel coordinate $(x, y, t)$, the reconstructed RGB values are:
 
 $$
 \hat{I}(x, y, t) = [\hat{R}, \hat{G}, \hat{B}] = f_\theta\left(\gamma\left(T_{g_\phi}(x, y, t)\right)\right)
 $$
 
-where:
+where:  
 - $T_{g_\phi}$ : motion transformation (e.g., homography or optical flow)  
 - $\gamma(\cdot)$ : positional encoding  
 - $f_\theta$ : scene representation network  
-- Both networks are trained jointly using an $\ell_2$ reconstruction loss
+- Both networks are trained jointly using an $\ell_2$ reconstruction loss  
 
 The optimization minimizes:
 
@@ -35,11 +37,11 @@ $$
 \mathcal{L} = \sum_{x, y, t} \left\lVert \hat{I}(x, y, t) - I(x, y, t) \right\rVert^2
 $$
 
-where:
-- $I(x, y, t)$ denotes the observed RGB value at pixel $(x, y)$ in frame $t$ (the input image sequence).
-- $\hat{I}(x, y, t)$ denotes the reconstructed RGB value predicted by the neural model.
+where:  
+- $I(x, y, t)$ denotes the observed RGB value at pixel $(x, y)$ in frame $t$ (the input image sequence).  
+- $\hat{I}(x, y, t)$ denotes the reconstructed RGB value predicted by the neural model.  
 
-Both networks are multilayer perceptrons (MLPs). To mitigate spectral bias, we apply a positional encoding $\gamma(\cdot)$ to spatial coordinates before mapping to RGB values.
+Both networks are multilayer perceptrons (MLPs). To mitigate spectral bias and improve the reconstruction of high-frequency details, the spatial coordinates are first passed through the positional encoding $\gamma(\cdot)$ before being mapped to RGB values by $f_\theta$.
 
 ---
 
