@@ -70,4 +70,7 @@ Ablation scripts for motion, encoding, and hyperparameter studies are also provi
 
 ---
 
-**Dataset:** The dataset of out work is availble here: [https://github.com/amirrezavazifeh/Fiber-Bundle-Imaging-Dataset]
+## Dataset
+The dataset used in this work is publicly available at:  
+https://github.com/amirrezavazifeh/Fiber-Bundle-Imaging-Dataset
+
