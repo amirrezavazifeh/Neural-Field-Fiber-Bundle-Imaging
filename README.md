@@ -70,4 +70,4 @@ Ablation scripts for motion, encoding, and hyperparameter studies are also provi
 
 ---
 
-**Repository:** [github.com/amirrezavazifeh/Neural-Field-Fiber-Endoscopy](https://github.com/amirrezavazifeh/Neural-Field-Fiber-Endoscopy)
+**Dataset:** The dataset of out work is availble here: [https://github.com/amirrezavazifeh/Fiber-Bundle-Imaging-Dataset]
