@@ -1,4 +1,4 @@
-# Neural Field Fiber Endoscopy
+# Neural Field for Fiber Bundle Imaging
 <p align="center">
   <img src="Principle.png" width="1000">
 </p>
@@ -6,7 +6,7 @@
 ---
 
 ## Overview
-Fiber-optic imaging systems enable minimally invasive **in-vivo** imaging but suffer from sampling artifacts (e.g., honeycomb patterns) due to discrete and non-uniform fiber layouts.  
+Fiber bundle imaging systems enable minimally invasive **in-vivo** imaging but suffer from sampling artifacts (e.g., honeycomb patterns) due to discrete and non-uniform fiber layouts.  
 
 This repository implements an **unsupervised test-time training method** for removing these artifacts from a burst of misaligned frames, without requiring ground truth, calibration, or prior knowledge of fiber geometry. The key idea is to use an image burst to recover information occluded by the fiber mask in individual frames but revealed across multiple frames.
 
