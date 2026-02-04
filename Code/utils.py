@@ -221,6 +221,54 @@ class HashMLP(nn.Module):
         return self.mlp(x_encoded)
 
 
+##################################################  Homography as Motion Model ##################################################
+# For writing this function, we referred to the following repository: https://github.com/shnnam/nir
+
+class Homography(nn.Module):
+    def __init__(self, in_features=1, hidden_features=256, hidden_layers=1):
+        super().__init__()
+        out_features = 8
+
+        self.net = []
+        self.net.append(nn.Linear(in_features, hidden_features))
+        self.net.append(nn.ReLU(inplace=True))
+        for i in range(hidden_layers):
+            self.net.append(nn.Linear(hidden_features, hidden_features))
+            self.net.append(nn.ReLU(inplace=True))
+        self.net.append(nn.Linear(hidden_features, out_features))
+        self.net = nn.Sequential(*self.net)
+
+        self.init_weights()
+
+    def init_weights(self):
+        with torch.no_grad():
+            # Initialize the bias of the last layer to represent an identity homography
+            self.net[-1].bias.copy_(torch.Tensor([1., 0., 0., 0., 1., 0., 0., 0.]))
+
+    def forward(self, coords):
+        output = self.net(coords)
+        return output
+
+def apply_homography(x, h):
+    # Extend homography vector to a full 3x3 matrix by adding ones
+    h = torch.cat([h, torch.ones_like(h[:, [0]])], -1)
+
+    # Reshape to batch of 3x3 matrices
+    h = h.view(-1, 3, 3)
+
+    # Convert input coordinates to homogeneous coordinates by adding 1
+    x = torch.cat([x, torch.ones_like(x[:, 0]).unsqueeze(-1)], -1).unsqueeze(-1)
+
+    # Apply homography transformation using batch matrix multiplication
+    o = torch.bmm(h, x).squeeze(-1)
+
+    # Convert back from homogeneous coordinates to 2D coordinates
+    o = o[:, :-1] / o[:, [-1]]
+
+    return o
+
+
+
 ##################################################  Basic Functions ##################################################
 # For writing this function, we used the following repository: https://github.com/shnnam/nir
 
@@ -258,6 +306,63 @@ def jacobian(y, x):
     return jacobian
 
 
+class VideoFitting(Dataset):
+    def __init__(self, path, transform=None):
+        super().__init__()
+
+        self.path = path
+
+        # Use a default transform (ToTensor) if none is provided
+        if transform is None:
+            self.transform = ToTensor()
+        else:
+            self.transform = transform
+
+        # Load the video into a tensor
+        self.video = self.get_video_tensor()
+
+        # Extract the number of frames, height, and width from the video tensor
+        self.num_frames, _, self.H, self.W = self.video.size()
+
+        # Reshape the video into pixels and generate grid coordinates for each pixel
+        self.pixels = self.video.permute(2, 3, 0, 1).contiguous().view(-1, 3)
+        self.coords = get_mgrid([self.H, self.W, self.num_frames])
+
+        # Shuffle the pixels and coordinates for randomization
+        shuffle = torch.randperm(len(self.pixels))
+        self.pixels = self.pixels[shuffle]
+        self.coords = self.coords[shuffle]
+
+    def get_video_tensor(self):
+
+        # Load and sort the frame files from the specified path
+
+        # For 2D Scene Dataset
+        frames = [f for f in os.listdir(self.path) if f.endswith('.png')]
+        frames = sorted(frames, key=lambda x: int(x.split('_')[0]))
+        print(frames)
+        video = []
+
+        # Load each frame as an image, apply the transform, and append to the video list
+        for i in range(len(frames)):
+        # for i in range(0, 1):
+            img = Image.open(os.path.join(self.path, frames[i]))
+            img = self.transform(img)
+            video.append(img)
+
+        # Stack the frames into a 4D tensor with shape (num_frames, channels, height, width)
+        return torch.stack(video, 0)
+
+    def __len__(self):
+        # Return the length of the dataset, hardcoded to 1 (single batch)
+        return 1
+
+    def __getitem__(self, idx):
+        if idx > 0: raise IndexError  # Only allow idx=0, raise an error otherwise
+
+        # Return the shuffled coordinates and corresponding pixel values
+        return self.coords, self.pixels
+    
 
 
 
