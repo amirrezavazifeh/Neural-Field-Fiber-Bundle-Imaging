@@ -1,6 +1,6 @@
 # Neural Field for Fiber Bundle Imaging
 <p align="center">
-  <img src="Figures/Principle.pdf" width="1000">
+  <img src="Principle.pdf" width="1000">
 </p>
 
 ---
@@ -47,7 +47,7 @@ Both networks are multilayer perceptrons (MLPs). To mitigate spectral bias and i
 
 ## Reconstruction Examples
 <p align="center">
-  <img src="Figures/Reconstruction-Examples.png" width="1000">
+  <img src="Reconstruction-Examples.png" width="1000">
 </p>
 
 ---
