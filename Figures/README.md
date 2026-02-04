@@ -1,6 +1,6 @@
 # Neural Field for Fiber Bundle Imaging
 <p align="center">
-  <img src="Principle.pdf" width="1000">
+  <img src="Principle.png" width="1000">
 </p>
 
 ---
